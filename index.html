@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaintedSwag — Hand-Painted Sweatshirts</title>
+<meta name="description" content="One-of-a-kind, hand-painted sweatshirts. Every piece painted to order.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --canvas:#F7F3EA;
+    --canvas-deep:#EFE8D8;
+    --ink:#211D1A;
+    --paint-coral:#FF5A46;
+    --paint-marigold:#FFB627;
+    --paint-teal:#178C99;
+    --paint-violet:#6A4C93;
+    --line:#C9BFA9;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--canvas);
+    color:var(--ink);
+    font-family:'Work Sans',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block;}
+
+  /* ---------- texture ---------- */
+  .canvas-texture{
+    position:relative;
+  }
+  .canvas-texture::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background-image:
+      radial-gradient(circle at 8% 22%, rgba(0,0,0,0.025) 0, transparent 40%),
+      radial-gradient(circle at 82% 68%, rgba(0,0,0,0.03) 0, transparent 45%);
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    overflow:hidden;
+    padding:64px 24px 96px;
+    text-align:center;
+    background:
+      radial-gradient(circle at 14% 18%, rgba(255,90,70,0.22) 0, transparent 32%),
+      radial-gradient(circle at 86% 12%, rgba(255,182,39,0.28) 0, transparent 30%),
+      radial-gradient(circle at 78% 82%, rgba(23,140,153,0.22) 0, transparent 34%),
+      radial-gradient(circle at 10% 86%, rgba(106,76,147,0.2) 0, transparent 30%),
+      var(--canvas);
+  }
+  .eyebrow{
+    display:inline-block;
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    background:var(--ink);
+    color:var(--canvas);
+    padding:6px 14px;
+    border-radius:2px;
+    transform:rotate(-2deg);
+    margin-bottom:28px;
+  }
+  .wordmark{
+    font-family:'Bungee',sans-serif;
+    font-size:clamp(44px,10vw,108px);
+    line-height:.92;
+    margin:0;
+    letter-spacing:.01em;
+    color:var(--ink);
+    text-shadow:6px 6px 0 var(--paint-marigold);
+  }
+  .wordmark span{color:var(--paint-coral);text-shadow:6px 6px 0 var(--ink);}
+  .tagline{
+    font-family:'Caveat',cursive;
+    font-size:clamp(24px,3.4vw,34px);
+    font-weight:700;
+    margin:18px 0 44px;
+    color:var(--paint-violet);
+  }
+  .hero-photo-wrap{
+    position:relative;
+    display:inline-block;
+    margin-bottom:40px;
+  }
+  .hero-photo{
+    width:min(360px,72vw);
+    border:10px solid #fff;
+    box-shadow:0 24px 48px -14px rgba(33,29,26,0.35);
+    transform:rotate(-3deg);
+    border-radius:2px;
+  }
+  .hero-badge{
+    position:absolute;
+    bottom:-16px;
+    right:-22px;
+    background:var(--paint-teal);
+    color:#fff;
+    font-family:'Caveat',cursive;
+    font-weight:700;
+    font-size:22px;
+    padding:10px 16px;
+    border-radius:50%;
+    width:88px;
+    height:88px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    line-height:1.05;
+    transform:rotate(8deg);
+    box-shadow:0 10px 20px -6px rgba(0,0,0,0.35);
+  }
+  .cta{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Space Mono',monospace;
+    font-weight:700;
+    font-size:15px;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    text-decoration:none;
+    color:#fff;
+    background:var(--ink);
+    padding:16px 30px;
+    border-radius:2px;
+    transition:transform .15s ease;
+  }
+  .cta:hover{transform:translateY(-2px);}
+  .cta svg{width:16px;height:16px;}
+
+  /* ---------- clothesline section ---------- */
+  .line-section{
+    position:relative;
+    padding:100px 24px 90px;
+    background:var(--canvas-deep);
+  }
+  .section-heading{
+    text-align:center;
+    max-width:640px;
+    margin:0 auto 64px;
+  }
+  .section-heading .kicker{
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--paint-teal);
+    display:block;
+    margin-bottom:10px;
+  }
+  .section-heading h2{
+    font-family:'Bungee',sans-serif;
+    font-size:clamp(28px,4vw,42px);
+    margin:0 0 12px;
+  }
+  .section-heading p{
+    font-size:16px;
+    color:#4a443c;
+    margin:0;
+  }
+
+  .clothesline{
+    position:relative;
+    max-width:1180px;
+    margin:0 auto;
+  }
+  .rope{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    height:2px;
+    background:repeating-linear-gradient(90deg,var(--ink) 0 10px, transparent 10px 18px);
+    opacity:.55;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:40px 28px;
+    padding-top:34px;
+  }
+  .card{
+    position:relative;
+    background:#fff;
+    padding:14px 14px 20px;
+    border-radius:3px;
+    box-shadow:0 16px 30px -18px rgba(33,29,26,0.4);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .card:hover{
+    transform:translateY(-6px) rotate(var(--tilt,0deg));
+    box-shadow:0 24px 34px -16px rgba(33,29,26,0.45);
+  }
+  .card:nth-child(5n+1){--tilt:-1.5deg;}
+  .card:nth-child(5n+2){--tilt:1deg;}
+  .card:nth-child(5n+3){--tilt:-0.8deg;}
+  .card:nth-child(5n+4){--tilt:1.6deg;}
+  .card:nth-child(5n+5){--tilt:-1.2deg;}
+
+  .clip{
+    position:absolute;
+    top:-22px;
+    left:50%;
+    transform:translateX(-50%);
+    width:26px;
+    height:34px;
+  }
+  .clip svg{width:100%;height:100%;filter:drop-shadow(0 3px 3px rgba(0,0,0,0.25));}
+
+  .card-name{
+    font-family:'Caveat',cursive;
+    font-weight:700;
+    font-size:23px;
+    text-align:center;
+    margin:6px 0 10px;
+    color:var(--ink);
+  }
+  .card-photo{
+    width:100%;
+    aspect-ratio:3/4;
+    object-fit:cover;
+    border-radius:2px;
+    background:var(--canvas-deep);
+  }
+  .card-price{
+    margin-top:14px;
+    display:inline-flex;
+    font-family:'Space Mono',monospace;
+    font-weight:700;
+    font-size:15px;
+    background:var(--ink);
+    color:var(--canvas);
+    padding:6px 12px;
+    border-radius:2px;
+  }
+  .card-footer{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:2px;
+  }
+  .card-buy{
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    text-decoration:none;
+    color:var(--paint-coral);
+    border-bottom:1px solid var(--paint-coral);
+    padding-bottom:1px;
+  }
+
+  .swatch-1 .clip svg{color:var(--paint-coral);}
+  .swatch-2 .clip svg{color:var(--paint-marigold);}
+  .swatch-3 .clip svg{color:var(--paint-teal);}
+  .swatch-4 .clip svg{color:var(--paint-violet);}
+  .swatch-5 .clip svg{color:var(--paint-coral);}
+  .swatch-6 .clip svg{color:var(--paint-teal);}
+  .swatch-7 .clip svg{color:var(--paint-marigold);}
+  .swatch-8 .clip svg{color:var(--paint-violet);}
+  .swatch-9 .clip svg{color:var(--paint-coral);}
+  .swatch-10 .clip svg{color:var(--paint-teal);}
+
+  /* ---------- footer ---------- */
+  footer{
+    padding:56px 24px 40px;
+    text-align:center;
+    background:var(--ink);
+    color:var(--canvas);
+  }
+  footer .foot-word{
+    font-family:'Bungee',sans-serif;
+    font-size:22px;
+    margin-bottom:10px;
+  }
+  footer p{
+    font-family:'Work Sans',sans-serif;
+    font-size:14px;
+    color:#C9C2B4;
+    margin:4px 0;
+  }
+  footer a{color:var(--paint-marigold);text-decoration:none;}
+
+  @media (max-width:1000px){
+    .grid{grid-template-columns:repeat(3,1fr);}
+  }
+  @media (max-width:640px){
+    .grid{grid-template-columns:repeat(2,1fr);gap:34px 16px;}
+    .card-name{font-size:19px;}
+    .hero{padding:48px 18px 76px;}
+  }
+</style>
+</head>
+<body>
+
+<section class="hero canvas-texture">
+  <span class="eyebrow">Painted to order · Northern VA</span>
+  <h1 class="wordmark">PAINTED<span>SWAG</span></h1>
+  <p class="tagline">Every sweatshirt is one of one.</p>
+
+  <div class="hero-photo-wrap">
+    <img class="hero-photo" src="images/sweatshirt-1.jpg" alt="Hand-painted sweatshirt, sample design">
+    <div class="hero-badge">100%<br>hand<br>painted</div>
+  </div>
+  <br>
+  <a class="cta" href="#shop">
+    Shop the collection
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </a>
+</section>
+
+<section class="line-section" id="shop">
+  <div class="section-heading">
+    <span class="kicker">The Collection</span>
+    <h2>Fresh off the clothesline</h2>
+    <p>Ten designs, painted by hand. Photos below are a placeholder while we shoot the real lineup — swap each one out as designs are finished.</p>
+  </div>
+
+  <div class="clothesline">
+    <div class="rope"></div>
+    <div class="grid">
+
+      <article class="card swatch-1">
+        <span class="clip"><svg viewBox="0 0 24 32" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v10M6 12h12v6a6 6 0 01-12 0v-6z"/></svg></span>
+        <h3 class="card-name">Sunset Drip</h3>
+        <img class="card-photo" src="images/sweatshirt-1.jpg" alt="Sunset Drip hand-painted sweatshirt">
+        <div class="card-footer">
+          <span class="card-price">$45</span>
+          <a class="card-buy" href="https://venmo.com/u/PaintedSwag" target="_blank" rel="noopener">Buy</a>
+        </div>
+      </article>
+
+      <article class="card swatch-2">
+        <span class="clip"><svg viewBox="0 0 24 32" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v10M6 12h12v6a6 6 0 01-12 0v-6z"/></svg></span>
+        <h3 class="card-name">Tie-Dye Splash</h3>
+        <img class="card-photo" src="images/sweatshirt-1.jpg" alt="Tie-Dye Splash hand-painted sweatshirt">
+        <div class="card-footer">
+          <span class="card-price">$48</span>
+          <a class="card-buy" href="https://venmo.com/u/PaintedSwag" target="_blank" rel="noopener">Buy</a>
+        </div>
+      </article>
+
+      <article class="card swatch-3">
+        <span class="clip"><svg viewBox="0 0 24 32" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v10M6 12h12v6a6 6 0 01-12 0v-6z"/></svg></span>
+        <h3 class="card-name">Galaxy Swirl</h3>
+        <img class="card-photo" src="images/sweatshirt-1.jpg" alt="Galaxy Swirl hand-painted sweatshirt">
+        <div class="card-footer">
+          <span class="card-price">$50</span>
+          <a class="card-buy" href="https://venmo.com/u/PaintedSwag" target="_blank" rel="noopener">Buy</a>
+        </div>
+      </article>
+
+      <article class="card swatch-4">
+        <span class="clip"><svg viewBox="0 0 24 32" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v10M6 12h12v6a6 6 0 01-12 0v-6z"/></svg></span>
+        <h3 class="card-name">Ocean Wave</h3>
+        <img class="card-photo" src="images/sweatshirt-1.jpg" alt="Ocean Wave hand-painted sweatshirt">
+        <div class="card-footer">
+          <span class="card-price">$45</span>
+          <a class="card-buy" href="https://venmo.com/u/PaintedSwag" target="_blank" rel="noopener">Buy</a>
+        </div>
+      </article>
+
+      <article class="card swatch-5">
+        <span class="clip"><svg viewBox="0 0 24 32" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v10M6 12h12v6a6 6 0 01-12 0v-6z"/></svg></span>
+        <h3 class="card-name">Paint Splatter</h3>
+        <img class="card-photo" src="images/sweatshirt-1.jpg" alt="Paint Splatter hand-painted sweatshirt">
+        <div class="card-footer">
+          <span class="card-price">$42</span>
+          <a class="card-buy" href="https://venmo.com/u/PaintedSwag" target="_blank" rel="noopener">Buy</a>
+        </div>
+      </article>
+
+      <article class="card swatch-6">
+        <span class="clip"><svg viewBox="0 0 24 32" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v10M6 12h12v6a6 6 0 01-12 0v-6z"/></svg></span>
+        <h3 class="card-name">Abstract Bloom</h3>
+        <img class="card-photo" src="images/sweatshirt-1.jpg" alt="Abstract Bloom hand-painted sweatshirt">
+        <div class="card-footer">
+          <span class="card-price">$48</span>
+          <a class="card-buy" href="https://venmo.com/u/PaintedSwag" target="_blank" rel="noopener">Buy</a>
+        </div>
+      </article>
+
+      <article class="card swatch-7">
+        <span class="clip"><svg viewBox="0 0 24 32" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v10M6 12h12v6a6 6 0 01-12 0v-6z"/></svg></span>
+        <h3 class="card-name">Neon Nights</h3>
+        <img class="card-photo" src="images/sweatshirt-1.jpg" alt="Neon Nights hand-painted sweatshirt">
+        <div class="card-footer">
+          <span class="card-price">$52</span>
+          <a class="card-buy" href="https://venmo.com/u/PaintedSwag" target="_blank" rel="noopener">Buy</a>
+        </div>
+      </article>
+
+      <article class="card swatch-8">
+        <span class="clip"><svg viewBox="0 0 24 32" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v10M6 12h12v6a6 6 0 01-12 0v-6z"/></svg></span>
+        <h3 class="card-name">Desert Sky</h3>
+        <img class="card-photo" src="images/sweatshirt-1.jpg" alt="Desert Sky hand-painted sweatshirt">
+        <div class="card-footer">
+          <span class="card-price">$45</span>
+          <a class="card-buy" href="https://venmo.com/u/PaintedSwag" target="_blank" rel="noopener">Buy</a>
+        </div>
+      </article>
+
+      <article class="card swatch-9">
+        <span class="clip"><svg viewBox="0 0 24 32" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v10M6 12h12v6a6 6 0 01-12 0v-6z"/></svg></span>
+        <h3 class="card-name">Rainbow Drip</h3>
+        <img class="card-photo" src="images/sweatshirt-1.jpg" alt="Rainbow Drip hand-painted sweatshirt">
+        <div class="card-footer">
+          <span class="card-price">$50</span>
+          <a class="card-buy" href="https://venmo.com/u/PaintedSwag" target="_blank" rel="noopener">Buy</a>
+        </div>
+      </article>
+
+      <article class="card swatch-10">
+        <span class="clip"><svg viewBox="0 0 24 32" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v10M6 12h12v6a6 6 0 01-12 0v-6z"/></svg></span>
+        <h3 class="card-name">Midnight Marble</h3>
+        <img class="card-photo" src="images/sweatshirt-1.jpg" alt="Midnight Marble hand-painted sweatshirt">
+        <div class="card-footer">
+          <span class="card-price">$48</span>
+          <a class="card-buy" href="https://venmo.com/u/PaintedSwag" target="_blank" rel="noopener">Buy</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-word">PAINTEDSWAG</div>
+  <p>Hand-painted sweatshirts, made one at a time.</p>
+  <p>Questions or custom orders — <a href="mailto:hello@paintedswag.com">hello@paintedswag.com</a></p>
+  <p style="margin-top:18px;color:#8a8375;">© 2026 PaintedSwag. All designs and photos placeholder pending final shoot.</p>
+</footer>
+
+</body>
+</html>
